@@ -3,7 +3,7 @@ import socketIoClient from "socket.io-client";
 import React, { useRef, useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-function Canvas({ option, connection }) {
+function Canvas({ option, socket }) {
   const canvasRef = useRef();
   const canvas2Ref = useRef();
   let gameState;
@@ -42,7 +42,7 @@ function Canvas({ option, connection }) {
     const ctx1 = canvas1.getContext('2d');
     const ctx2 = canvas2.getContext('2d');
 ///////////////////////////////////////////////
-    connection.on('gameState', data =>{
+    socket.on('gameState', data =>{
       ctx1.clearRect(0, 0, canvasWidth, canvasHeight);
       ctx2.clearRect(0, 0, canvasWidth, canvasHeight);
       drawGame1(data, ctx1);
@@ -82,7 +82,7 @@ function Canvas({ option, connection }) {
     // connection.emmit('noMoreBricks)
   }, [])
   document.addEventListener('keydown', (e) =>{
-    connection.emit('keyDown', {key: e.key});
+    socket.emit('keyDown', {key: e.key});
   })
   return (
 
