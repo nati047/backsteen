@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-const room = []
+const rooms = {};
 // canvas
 canvasWidth = 600;
 canvasHeight = 600;
@@ -165,8 +165,7 @@ const startGame2 = () => {
 
 
 io.on("connection", (socket)=>{
-
-   
+  console.log("socket connected", socket.id)
 
   setInterval(() => {
     if (!state.player1.gamePause) startGame1();
@@ -174,19 +173,39 @@ io.on("connection", (socket)=>{
     socket.emit('gameState',  state );
   }, 100);
 
-  socket.on('keyDown', msg => { // move paddle depending on socket where keypress event originated
-    if(socket.id === room[0] && msg.key === "ArrowRight") paddle1.update("right", canvasWidth);
-    if(socket.id === room[0] && msg.key === "ArrowLeft") paddle1.update("left", canvasWidth); 
+  // socket.on('keyDown', msg => { // move paddle depending on socket where keypress event originated
+  //   if(socket.id === room[0] && msg.key === "ArrowRight") paddle1.update("right", canvasWidth);
+  //   if(socket.id === room[0] && msg.key === "ArrowLeft") paddle1.update("left", canvasWidth); 
     
-    if(socket.id === room[1] && msg.key === "ArrowRight") paddle2.update("right", canvasWidth);
-    if(socket.id === room[1] && msg.key === "ArrowLeft") paddle2.update("left", canvasWidth);
+  //   if(socket.id === room[1] && msg.key === "ArrowRight") paddle2.update("right", canvasWidth);
+  //   if(socket.id === room[1] && msg.key === "ArrowLeft") paddle2.update("left", canvasWidth);
+  // });
+
+  // socket.join('room', () =>{
+  //   room.push(socket.id)
+  //   console.log(room)
+  // })
+  socket.on("createGame", (msg) =>{
+    console.log("game started by: ",socket.id)
+    console.log("game code ",msg)
+    rooms[msg.code] = [socket.id];
+    socket.join(`${msg.code}`, () =>{
+      console.log('rooms', rooms);
+    })
   });
 
-  socket.join('room', () =>{
-    room.push(socket.id)
-    console.log(room)
+  socket.on('checkCode', (code) =>{
+    console.log("code from joiner",code);
+    if (rooms[code]) {
+      console.log('room exists');
+      if(rooms[code].length === 1) {
+      rooms[code].push(socket.id);
+      socket.join(`${code}`, () => console.log('joined game'));
+      console.log('rooms after joined', rooms);
+      io.in(`${code}`).emit('matched')
+      }
+    }  
   })
- 
 });
 
 

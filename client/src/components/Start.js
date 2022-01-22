@@ -3,8 +3,8 @@ import { Navigate, Link} from "react-router-dom";
 import Canvas from "./Canvas";
 
 
-function Start(props) {
-console.log("props in start", props)
+function Start({socket}) {
+// console.log("props in start", socket)
   const [name, setName] = useState('');  
   const [code, setCode] = useState('')
   const [mode, setMode] = useState('');  
@@ -27,12 +27,13 @@ console.log("props in start", props)
   }
 
   const createGameHandler = () => {
-     let c = generateCode();
-     setRandomCode(c);
-    // socket.emit('create game', {randomCode})
+    let c = generateCode();
+    setRandomCode(c);
+    socket.emit('createGame', { code: c})
     console.log(randomCode);
     setMode('create');
-  }
+  };
+
   const joinGameHandler = () =>{
     // socket.emit('joined game')
     console.log("join game clicked")
@@ -43,16 +44,19 @@ console.log("props in start", props)
     setName(e.target.value)
   };
 
-  const handleCodeSubmit = () => {
-    // socket.emit('check code');
-    console.log('got code');
+  const handleCodeSubmit = (e) => {
+    socket.emit('checkCode', code);
+    console.log('got code', code);
     setMode('checkingCode');
-    
   };
 
   const handleCodeChange = (e) =>{
     setCode(e.target.value)
-  }
+  };
+  socket.on('matched', () =>{
+    console.log('sending you to the game')
+    setMode("codeAccepted");
+  })
 
   return (
     <div>
@@ -85,9 +89,9 @@ console.log("props in start", props)
      }
      {mode === 'join' && 
       <form onSubmit={handleCodeSubmit}>
-      <label >Input game code</label>
-      <input value = {code} type="text" onChange={handleCodeChange} ></input>
-      <button type="submit" >Next</button>
+        <label >Input game code</label>
+        <input value = {code} type="text" onChange={handleCodeChange} ></input>
+        <button type="submit" >Next</button>
     </form>
      }
      
