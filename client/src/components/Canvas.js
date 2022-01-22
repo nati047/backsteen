@@ -6,10 +6,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function Canvas({ option, socket }) {
   const canvasRef = useRef();
   const canvas2Ref = useRef();
-  let gameState;
   const canvasWidth = 600;
   const canvasHeight = 600;
-
+  let gameState;
+  let roomName;
   // ball
   
 
@@ -43,10 +43,11 @@ function Canvas({ option, socket }) {
     const ctx2 = canvas2.getContext('2d');
 ///////////////////////////////////////////////
     socket.on('gameState', data =>{
+      roomName = data.roomName;
       ctx1.clearRect(0, 0, canvasWidth, canvasHeight);
       ctx2.clearRect(0, 0, canvasWidth, canvasHeight);
-      drawGame1(data, ctx1);
-      drawGame2(data, ctx2);
+      drawGame1(data.state, ctx1);
+      drawGame2(data.state, ctx2);
     })  
 
     function drawPaddle(ctx, paddle) {
@@ -80,9 +81,10 @@ function Canvas({ option, socket }) {
 
     // connection.on('gameOver', handleGameover)
     // connection.emmit('noMoreBricks)
-  }, [])
+  }, []);
   document.addEventListener('keydown', (e) =>{
-    socket.emit('keyDown', {key: e.key});
+    console.log(socket.id, "pressed keyboadrd")
+    socket.emit('keyDown', {key: e.key, roomName});
   })
   return (
 

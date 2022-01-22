@@ -21,28 +21,28 @@ class Ball {
     this.dx = 5;
     this.dy = -5;
   }
-  update  () {
+  update() {
     this.x += this.dx;
     this.y += this.dy;
-  } 
-  
+  }
+
 };
 
 class Paddle {
-  constructor () {
+  constructor() {
     this.x = 100;
     this.width = 100;
     this.height = 10;
   }
-  update (direction, canvasWidth) {
-    if(direction === 'left') 
+  update(direction, canvasWidth) {
+    if (direction === 'left')
       this.x -= 10;
-    if(direction === 'right') 
+    if (direction === 'right')
       this.x += 10;
-    if(this.x < 0) 
+    if (this.x < 0)
       this.x = 0;
-    if(this.x + this.width > canvasWidth) 
-      this.x = canvasWidth - this.width; 
+    if (this.x + this.width > canvasWidth)
+      this.x = canvasWidth - this.width;
   }
 }
 
@@ -57,53 +57,53 @@ class Bricks {
     this.OffsetTop = 30;
     this.OffsetLeft = 0;
   }
-  fillBricks () {
-    
+  fillBricks() {
+
     for (let i = 0; i < this.columns; i++) {
       this.bricks[i] = [];
       for (let v = 0; v < this.rows; v++) {
         this.bricks[i][v] = { x: 0, y: 0, status: 1 };
         this.bricks[i][v].x = i * (this.width + this.padding) + this.OffsetLeft;
-        this.bricks[i][v].y  = v * (this.height + this.padding) + this.OffsetTop;
-          
+        this.bricks[i][v].y = v * (this.height + this.padding) + this.OffsetTop;
+
       }
     }
   };
-  
+
 };
-const ball1 = new Ball;
-const paddle1 = new Paddle;
-const bricks1 = new Bricks;
-bricks1.fillBricks(); 
+// const ball1 = new Ball;
+// const paddle1 = new Paddle;
+// const bricks1 = new Bricks;
+// bricks1.fillBricks(); 
 
-const ball2 = new Ball;
-const paddle2 = new Paddle;
-const bricks2 = new Bricks;
-bricks2.fillBricks(); 
+// const ball2 = new Ball;
+// const paddle2 = new Paddle;
+// const bricks2 = new Bricks;
+// bricks2.fillBricks(); 
 
-const state = {
-  player1: {
-    name: '',
-    win: false,
-    score: 0,
-    lives: 2,
-    gamePause: false,
-  },
-  player2: {
-    name: '',
-    win: false,
-    score: 0,
-    lives: 3,
-    gamePause: false,
-  },
-  gameOver: false,
-  ball1,
-  paddle1,
-  bricks1,
-  ball2,
-  paddle2,
-  bricks2
-}
+// const state = {
+//   player1: {
+//     name: '',
+//     win: false,
+//     score: 0,
+//     lives: 2,
+//     gamePause: false,
+//   },
+//   player2: {
+//     name: '',
+//     win: false,
+//     score: 0,
+//     lives: 3,
+//     gamePause: false,
+//   },
+//   gameOver: false,
+//   ball1,
+//   paddle1,
+//   bricks1,
+//   ball2,
+//   paddle2,
+//   bricks2
+// }
 
 function collision(brick, ball) {
   for (let i = 0; i < brick.columns; i++) {
@@ -123,95 +123,136 @@ function collision(brick, ball) {
     }
   }
 };
-const reset = (paddle, ball, player) =>{
+const reset = (paddle, ball, player) => {
   player.gamePause = true
   ball.x = paddle.x + paddle.width / 2;
   ball.y = canvasWidth - paddle.height - ball.radius - 1;
-  
+
   const timeOut = setTimeout(() => {
     player.gamePause = false;
   }, 1000);
 
 }
 const bounce = (paddle, ball, player) => {
-  
+
   if (ball.x + ball.dx > canvasWidth - ball.radius || ball.x + ball.dx < ball.radius) {
     ball.dx = - ball.dx;
   }
-  if (ball.y + ball.radius  >= canvasHeight - paddle.height && (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) || ball.y  <= ball.radius) {
+  if (ball.y + ball.radius >= canvasHeight - paddle.height && (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) || ball.y <= ball.radius) {
     ball.dy = -ball.dy;
-  } else if (ball.y + ball.radius  > canvasHeight - paddle.height && !(ball.x > paddle.x && ball.x < paddle.x + paddle.width) ){
+  } else if (ball.y + ball.radius > canvasHeight - paddle.height && !(ball.x > paddle.x && ball.x < paddle.x + paddle.width)) {
     reset(paddle, ball, player);
     // ball.dy = -ball.dy; // @TODO fix this 
   }
 };
 
-const startGame1 = () => {
-  ball1.update();
-  collision(bricks1, ball1);
-  bounce(paddle1, ball1, state.player1);
+const startGame = (ball, brick, state, paddle) => {
+  ball.update();
+  collision(brick, ball);
+  bounce(paddle, ball, state.player1);
 };
 
-const startGame2 = () => {
-  ball2.update();
-  collision(bricks2, ball2);
-  bounce(paddle2, ball2, state.player2);
-};
-
-// const gameInterval = setInterval(() => {
-//   startGame();
-// }, 1000);
+// const startGame2 = (ball, brick, state, paddle) => {
+//   ball2.update();
+//   collision(bricks2, ball2);
+//   bounce(paddle2, ball2, state.player2);
+// };
 
 
-
-io.on("connection", (socket)=>{
+io.on("connection", (socket) => {
   console.log("socket connected", socket.id)
-
-  setInterval(() => {
-    if (!state.player1.gamePause) startGame1();
-    if (!state.player2.gamePause) startGame2();
-    socket.emit('gameState',  state );
-  }, 100);
-
-  // socket.on('keyDown', msg => { // move paddle depending on socket where keypress event originated
-  //   if(socket.id === room[0] && msg.key === "ArrowRight") paddle1.update("right", canvasWidth);
-  //   if(socket.id === room[0] && msg.key === "ArrowLeft") paddle1.update("left", canvasWidth); 
-    
-  //   if(socket.id === room[1] && msg.key === "ArrowRight") paddle2.update("right", canvasWidth);
-  //   if(socket.id === room[1] && msg.key === "ArrowLeft") paddle2.update("left", canvasWidth);
-  // });
-
-  // socket.join('room', () =>{
-  //   room.push(socket.id)
-  //   console.log(room)
-  // })
-  socket.on("createGame", (msg) =>{
-    console.log("game started by: ",socket.id)
-    console.log("game code ",msg)
-    rooms[msg.code] = [socket.id];
-    socket.join(`${msg.code}`, () =>{
+  
+  socket.on("createGame", (msg) => {
+    console.log("game started by: ", socket.id)
+    console.log("game code ", msg)
+    rooms[msg.code] = {
+      players: [],
+      state: {}
+    };
+    rooms[msg.code].players.push(socket.id);
+    socket.join(`${msg.code}`, () => {
       console.log('rooms', rooms);
     })
   });
 
-  socket.on('checkCode', (code) =>{
-    console.log("code from joiner",code);
+  socket.on('checkCode', (code) => {
+    console.log("code from joiner", code);
     if (rooms[code]) {
       console.log('room exists');
-      if(rooms[code].length === 1) {
-      rooms[code].push(socket.id);
-      socket.join(`${code}`, () => console.log('joined game'));
-      console.log('rooms after joined', rooms);
-      io.in(`${code}`).emit('matched')
+      if (rooms[code].players.length === 1) {
+        rooms[code].players.push(socket.id);
+        socket.join(`${code}`, () => {
+          console.log('joined game')
+          runGame(code);
+        });
+        io.in(`${code}`).emit('matched');
+        console.log('rooms after joined', rooms);
       }
-    }  
-  })
+    }
+  });
+
+  const runGame = (code) => {
+
+    console.log("room name", code);
+    const ball1 = new Ball;
+    const paddle1 = new Paddle;
+    const bricks1 = new Bricks;
+    bricks1.fillBricks();
+
+    const ball2 = new Ball;
+    const paddle2 = new Paddle;
+    const bricks2 = new Bricks;
+    bricks2.fillBricks();
+    const state = {
+      player1: {
+        name: '',
+        win: false,
+        score: 0,
+        lives: 2,
+        gamePause: false,
+      },
+      player2: {
+        name: '',
+        win: false,
+        score: 0,
+        lives: 3,
+        gamePause: false,
+      },
+      gameOver: false,
+      ball1,
+      paddle1,
+      bricks1,
+      ball2,
+      paddle2,
+      bricks2
+    };
+    rooms[code].state = state;
+    console.log("room after state add: ---\n", rooms)
+    setInterval(() => {
+      if (!state.player1.gamePause) startGame(ball1, bricks1, state, paddle1);
+      if (!state.player2.gamePause) startGame(ball2, bricks2, state, paddle2);
+      io.in(code).emit('gameState', {state, roomName: code});   // send game info to a room 
+    }, 100);
+
+    
+  };
+
+  socket.on('keyDown', msg => { // move paddle depending on socket where keypress event originated
+    if(rooms[msg.roomName]) {
+      if (socket.id === rooms[msg.roomName].players[0] && msg.key === "ArrowRight") rooms[msg.roomName].state.paddle1.update("right", canvasWidth);
+      if (socket.id === rooms[msg.roomName].players[0] && msg.key === "ArrowLeft") rooms[msg.roomName].state.paddle1.update("left", canvasWidth);
+      if (socket.id === rooms[msg.roomName].players[1] && msg.key === "ArrowRight") rooms[msg.roomName].state.paddle2.update("right", canvasWidth);
+      if (socket.id === rooms[msg.roomName].players[1] && msg.key === "ArrowLeft") rooms[msg.roomName].state.paddle2.update("left", canvasWidth);
+    }
+  });
+
+
+ 
 });
 
-
-server.listen(PORT, () =>{
+server.listen(PORT, () => {
   console.log('Connected');
-}) 
+})
 
 
 
