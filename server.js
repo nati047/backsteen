@@ -71,41 +71,8 @@ class Bricks {
   };
 
 };
-// const ball1 = new Ball;
-// const paddle1 = new Paddle;
-// const bricks1 = new Bricks;
-// bricks1.fillBricks(); 
 
-// const ball2 = new Ball;
-// const paddle2 = new Paddle;
-// const bricks2 = new Bricks;
-// bricks2.fillBricks(); 
-
-// const state = {
-//   player1: {
-//     name: '',
-//     win: false,
-//     score: 0,
-//     lives: 2,
-//     gamePause: false,
-//   },
-//   player2: {
-//     name: '',
-//     win: false,
-//     score: 0,
-//     lives: 3,
-//     gamePause: false,
-//   },
-//   gameOver: false,
-//   ball1,
-//   paddle1,
-//   bricks1,
-//   ball2,
-//   paddle2,
-//   bricks2
-// }
-
-function collision(brick, ball) {
+const  collision = (brick, ball, player) => {
   for (let i = 0; i < brick.columns; i++) {
     for (let v = 0; v < brick.rows; v++) {
       const b = brick.bricks[i][v];
@@ -118,22 +85,31 @@ function collision(brick, ball) {
         ) {
           ball.dy = -ball.dy;
           b.status = 0;
+          player.score += 100;
         }
       }
     }
   }
 };
-const reset = (paddle, ball, player) => {
-  player.gamePause = true
-  ball.x = paddle.x + paddle.width / 2;
-  ball.y = canvasWidth - paddle.height - ball.radius - 1;
+const reset = (paddle, ball, player, state) => {
+    player.gamePause = true;
+    player.lives -= 1;
+    if (player.lives > 0) {
+      ball.x = paddle.x + paddle.width / 2;
+      ball.y = canvasWidth - paddle.height - ball.radius - 1;
+  
+      const timeOut = setTimeout(() => {
+        player.gamePause = false;
+      }, 500);
+    } else {
+        state.gameOver = true;
+        player.lose = true;
+    }
+};
 
-  const timeOut = setTimeout(() => {
-    player.gamePause = false;
-  }, 1000);
 
-}
-const bounce = (paddle, ball, player) => {
+
+const bounce = (paddle, ball, player, state) => {
 
   if (ball.x + ball.dx > canvasWidth - ball.radius || ball.x + ball.dx < ball.radius) {
     ball.dx = - ball.dx;
@@ -141,23 +117,31 @@ const bounce = (paddle, ball, player) => {
   if (ball.y + ball.radius >= canvasHeight - paddle.height && (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) || ball.y <= ball.radius) {
     ball.dy = -ball.dy;
   } else if (ball.y + ball.radius > canvasHeight - paddle.height && !(ball.x > paddle.x && ball.x < paddle.x + paddle.width)) {
-    reset(paddle, ball, player);
+    reset(paddle, ball, player, state);
     // ball.dy = -ball.dy; // @TODO fix this 
   }
 };
 
-const startGame = (ball, brick, state, paddle) => {
+const noBricks = (player, state, brick) => {
+  for (let i = 0; i < brick.columns; i++) {
+    for (let v = 0; v < brick.rows; v++) {
+      const b = brick.bricks[i][v];
+      if (b.status == 1) {
+       return ;
+      }
+    }
+  }
+  state.gameOver = true;
+  player.win = true;
+}
+
+const updateGame = (ball, bricks, state, paddle, player) => {
   ball.update();
-  collision(brick, ball);
-  bounce(paddle, ball, state.player1);
+  collision(bricks, ball, player);
+  bounce(paddle, ball, player, state);
+  noBricks(player, state, bricks);
+  // reset(paddle,ball, player)
 };
-
-// const startGame2 = (ball, brick, state, paddle) => {
-//   ball2.update();
-//   collision(bricks2, ball2);
-//   bounce(paddle2, ball2, state.player2);
-// };
-
 
 io.on("connection", (socket) => {
   console.log("socket connected", socket.id)
@@ -205,17 +189,19 @@ io.on("connection", (socket) => {
     bricks2.fillBricks();
     const state = {
       player1: {
-        name: '',
+        name: 'player 1',
+        lose: false,
         win: false,
         score: 0,
-        lives: 2,
+        lives: 4,
         gamePause: false,
       },
       player2: {
-        name: '',
+        name: 'player 2',
+        lose: false,
         win: false,
         score: 0,
-        lives: 3,
+        lives: 4,
         gamePause: false,
       },
       gameOver: false,
@@ -227,14 +213,26 @@ io.on("connection", (socket) => {
       bricks2
     };
     rooms[code].state = state;
-    console.log("room after state add: ---\n", rooms)
-    setInterval(() => {
-      if (!state.player1.gamePause) startGame(ball1, bricks1, state, paddle1);
-      if (!state.player2.gamePause) startGame(ball2, bricks2, state, paddle2);
-      io.in(code).emit('gameState', {state, roomName: code});   // send game info to a room 
-    }, 100);
+   
+      const gameInterval = setInterval(() => {
+        if (!state.player1.gamePause) updateGame(ball1, bricks1, state, paddle1, state.player1);
+        if (!state.player2.gamePause) updateGame(ball2, bricks2, state, paddle2, state.player2);
+        if(!state.gameOver) {
+          io.in(code).emit('gameState', {state, roomName: code});   // send game info to a room 
+        } else {
+          let winner;
+          if(state.player1.lose || state.player2.win) {
+            winner = state.player2
+          } else {
+            winner = state.player1
+          }
+          clearInterval(gameInterval);
+          console.log(winner);
+          io.in(code).emit('gameOver', {winner: winner.name, score: winner.score});
+        }
 
-    
+      }, 1000/60);
+  
   };
 
   socket.on('keyDown', msg => { // move paddle depending on socket where keypress event originated
@@ -245,9 +243,11 @@ io.on("connection", (socket) => {
       if (socket.id === rooms[msg.roomName].players[1] && msg.key === "ArrowLeft") rooms[msg.roomName].state.paddle2.update("left", canvasWidth);
     }
   });
+  
+  // socket.on('playerName', (data) => {
+  //   console.log("player name", data.name, "  ",data.code);
+  // });
 
-
- 
 });
 
 server.listen(PORT, () => {

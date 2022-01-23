@@ -46,17 +46,18 @@ function Start({socket}) {
 
   const handleCodeSubmit = (e) => {
     socket.emit('checkCode', code);
-    console.log('got code', code);
     setMode('checkingCode');
   };
 
   const handleCodeChange = (e) =>{
     setCode(e.target.value)
   };
+
   socket.on('matched', () =>{
-    console.log('sending you to the game')
+    console.log('sending you to the game');
+    // socket.emit('playerName', {name, code});
     setMode("codeAccepted");
-  })
+  });
 
   return (
     <div>
