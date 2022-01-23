@@ -1,0 +1,84 @@
+body {
+  margin-top: 100px;
+  background-image: url(../background.jpg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  font-family: "Bungee", cursive;
+  color: aliceblue;
+}
+
+.header {
+  font-size: 24px;
+  font-family: "Open Sans", sans-serif;
+}
+
+.title {
+  margin-top: 150px;
+}
+
+.labelin {
+  margin-left: 180px;
+  font-size: 25px;
+}
+.label-input {
+  margin-top: 30px;
+  margin-left: 180px;
+  font-size: 30px;
+}
+.label-join {
+  font-size: 25px;
+  margin-left: 230px;
+}
+.button {
+  margin-top: 20px;
+  margin-left: 290px;
+  font-size: 25px;
+  font-family: "Bungee", cursive;
+}
+.gotname {
+  margin-left: 250px;
+  font-size: 20px;
+}
+
+.button-create {
+  font-size: 20px;
+  margin-left: 250px;
+  font-size: 25px;
+  font-family: "Bungee", cursive;
+}
+
+.button-join {
+  font-size: 20px;
+  margin-left: 270px;
+  font-size: 25px;
+  font-family: "Bungee", cursive;
+}
+
+.or {
+  font-size: 30px;
+  margin-left: 320px;
+}
+.controls {
+  margin-top: 100px;
+  margin-left: 240px;
+  font-size: 30px;
+  text-decoration: none;
+  color: aliceblue;
+}
+
+.control-h1 {
+  margin-top: 150px;
+  text-align: center;
+}
+.control-p {
+  margin-top: 50px;
+  text-align: center;
+  font-size: 20px;
+  margin: 10px 5px;
+}

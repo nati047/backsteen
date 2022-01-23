@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import Canvas from "./Canvas";
-import "./style.scss";
-
+import "./Style.css";
 function Start(props) {
   console.log("props in start", props);
   const [name, setName] = useState("");
@@ -54,26 +53,41 @@ function Start(props) {
 
   return (
     <div>
-      <h1>Welcome To Multiplaer Brick Game</h1>
+      <h1 className="title">Welcome To Multiplaer Brick Game</h1>
+
       {mode === "" && (
         <form onSubmit={handleSubmit}>
-          <label>Input Nickname</label>
-          <input value={name} type="text" onChange={handleNameChange}></input>
-          <button type="submit">Next</button>
+          <div>
+            <label className="labelin">Please input your intials</label>
+          </div>
+          <input
+            className="label-input"
+            value={name}
+            type="text"
+            onChange={handleNameChange}
+          ></input>
+          <div>
+            <button className="button" type="submit">
+              Next
+            </button>
+          </div>
         </form>
       )}
-      <Link to="/leaders">
+      {/* <Link to="/leaders">
         <h3>leadersBoard</h3>
-      </Link>
-      <Link to="/controls">
-        <h3>controls</h3>
-      </Link>
+      </Link> */}
 
       {mode === "gotName" && (
         <div>
-          <button onClick={createGameHandler}> create game</button>
-          <h1>Or</h1>
-          <button onClick={joinGameHandler}> Join game</button>
+          <button className="button-create" onClick={createGameHandler}>
+            {" "}
+            create game
+          </button>
+          <h1 className="or">Or</h1>
+          <button className="button-join" onClick={joinGameHandler}>
+            {" "}
+            Join game
+          </button>
         </div>
       )}
       {mode === "create" && (
@@ -85,11 +99,26 @@ function Start(props) {
       )}
       {mode === "join" && (
         <form onSubmit={handleCodeSubmit}>
-          <label>Input game code</label>
-          <input value={code} type="text" onChange={handleCodeChange}></input>
-          <button type="submit">Next</button>
+          <div>
+            <label className="label-join">Input game code</label>
+          </div>
+
+          <input
+            className="label-input"
+            value={code}
+            type="text"
+            onChange={handleCodeChange}
+          ></input>
+          <div>
+            <button className="button" type="submit">
+              Next
+            </button>
+          </div>
         </form>
       )}
+      <Link to="/controls">
+        <h3 className="controls">How to play</h3>
+      </Link>
 
       {mode === "checkingCode" && <h1>checking code</h1>}
       {mode === "codeAccepted" && <Navigate to="/game" />}
