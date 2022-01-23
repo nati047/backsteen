@@ -13,7 +13,7 @@ function Leaders () {
 			<tr>
 				<td>Ranking</td>
 				<td>UserName</td>
-				<td>Marks</td>
+				<td>Score</td>
 			</tr>
         </table>
     </body>
