@@ -21,7 +21,7 @@ class Ball {
     this.x = 150;
     this.y = 300;
     this.radius = 8;
-    this.dx = 5;
+    this.dx = 3;
     this.dy = -5;
   }
   update() {
@@ -39,9 +39,9 @@ class Paddle {
   }
   update(direction, canvasWidth) {
     if (direction === 'left')
-      this.x -= 20;
+      this.x -= 15;
     if (direction === 'right')
-      this.x += 20;
+      this.x += 15;
     if (this.x < 0)
       this.x = 0;
     if (this.x + this.width > canvasWidth)
@@ -120,7 +120,6 @@ const bounce = (paddle, ball, player, state, room) => {
   if (ball.y + ball.radius >= canvasHeight - paddle.height && (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) || ball.y <= ball.radius) {
     ball.dy = -ball.dy;
     if((ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) && (ball.y + ball.radius >= canvasHeight - paddle.height) && !player.gamePause) {
-      console.log('paddle hit emit')
       io.in(room).emit('paddleHit');
     }
   } else if (ball.y + ball.radius > canvasHeight - paddle.height && !(ball.x > paddle.x && ball.x < paddle.x + paddle.width)) {
@@ -259,13 +258,15 @@ io.on("connection", (socket) => {
   });
   
   socket.on('restart', roomName => {
-    runGame(roomName);
+    if(rooms[roomName] && rooms[roomName].state.gameOver) { 
+     runGame(roomName);
+    }
   });
 
 });
 
 server.listen(PORT, () => {
-  console.log('Connected');
+  console.log('Connected on port', PORT);
 })
 
 

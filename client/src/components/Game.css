@@ -48,7 +48,7 @@ body {
   color:brown;
   font-family: "Press Start 2p";
   align-self: center;
-  
+  box-shadow:  2px 2px 2px black;
 }
 .home-link{
   text-decoration: none;

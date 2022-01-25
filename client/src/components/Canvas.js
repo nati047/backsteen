@@ -106,8 +106,11 @@ function Canvas({ socket }) {
     const drawPaddle = (ctx, paddle) => {
       ctx.beginPath();
       ctx.rect(paddle.x, canvasHeight - paddle.height, paddle.width, paddle.height);
-      ctx.fillStyle = "#0000ff";
+      ctx.fillStyle = "#0357ff";
       ctx.fill();
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = '#0bff03';
+      ctx.stroke(); 
       ctx.closePath();
     }
 
@@ -157,12 +160,10 @@ function Canvas({ socket }) {
     });
 
     socket.on('paddleHit', () => {
-      console.log("paddle hit");
       paddleSound.play();
     });
 
     socket.on('brickHit', () => {
-      console.log("brick hit");
       brickSound.play();
     });
 

@@ -14,9 +14,7 @@ function Start({socket}) {
   //   src: music,
   //   html5: true
   // });
-  // sound.volume = 0.1;
   // sound.loop = true;
-  // sound.play();
 
 
   const handleSubmit = () => {
@@ -62,10 +60,8 @@ function Start({socket}) {
   };
 
   socket.on('matched', () =>{
-    console.log('sending you to the game');
     socket.emit('playerName', {name, code});
     setMode("codeAccepted");
-    
   });
 
   window.addEventListener('load', (event) => {
