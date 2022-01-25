@@ -14,7 +14,7 @@ function Controls() {
       </p>
       <h3 className="control-p">Good luck</h3>
       <Link to="/">
-        <h3 className="control-back">&#9665;</h3>
+        <h3 className="controls">Back to the main page</h3>
       </Link>
     </div>
   );

@@ -1,5 +1,4 @@
 import React from "react";
-import "./Leaders.css";
 
 function Leaders () {
   
@@ -10,7 +9,7 @@ function Leaders () {
 	</head>
 
 	<body>
-		<h2>Brick Breaker High Scores!</h2>
+		<h2>High Scores</h2>
 		<table>
 			<tr>
 				<td>Ranking</td>
