@@ -1,5 +1,5 @@
 body {
-  margin-top: 0;
+  /* margin-top: px; */
   background-image: url(../background.jpg);
   display: flex;
   flex-direction: column;
@@ -17,28 +17,45 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
+.image {
+  margin-top: 20px;
+  width: 80px;
+  height: 80px;
+}
 .title {
-  margin-top: 150px;
+  margin-top: 80px;
+  font-size: 60px;
+  text-align: center;
 }
 
 .labelin {
-  margin-left: 180px;
-  font-size: 25px;
+  margin-left: 330px;
+  font-size: 50px;
 }
 .label-input {
   margin-top: 30px;
-  margin-left: 180px;
-  font-size: 30px;
+  margin-left: 400px;
+  font-size: 60px;
 }
 .label-join {
-  font-size: 25px;
-  margin-left: 230px;
+  font-size: 50px;
+  margin-left: 480px;
 }
 .button {
-  margin-top: 20px;
-  margin-left: 290px;
-  font-size: 25px;
+  margin-top: 10px;
+  margin-left: 650px;
+  font-size: 120px;
+  background-color: transparent;
+  border: none;
+  color: aliceblue;
   font-family: "Bungee", cursive;
+}
+
+.play {
+  border-top: 10px solid white;
+  border-bottom: 10px solid white;
+  border-left: 20px solid black;
+  height: 0px;
 }
 .gotname {
   margin-left: 250px;
@@ -46,38 +63,48 @@ body {
 }
 
 .button-create {
-  font-size: 20px;
-  margin-left: 250px;
-  font-size: 25px;
+  font-size: 50px;
+  margin-left: 550px;
   font-family: "Bungee", cursive;
 }
 
 .button-join {
-  font-size: 20px;
-  margin-left: 270px;
-  font-size: 25px;
+  font-size: 50px;
+  margin-left: 570px;
   font-family: "Bungee", cursive;
 }
 
 .or {
-  font-size: 30px;
-  margin-left: 320px;
+  font-size: 50px;
+  margin-left: 700px;
 }
 .controls {
-  margin-top: 100px;
-  margin-left: 240px;
-  font-size: 30px;
+  margin-top: -80px;
+  margin-left: 1200px;
+  font-size: 40px;
   text-decoration: none;
   color: aliceblue;
 }
 
+.control-back {
+  font-size: 120px;
+  margin-top: 50px;
+  text-align: center;
+  text-decoration: none;
+  color: aliceblue;
+}
 .control-h1 {
-  margin-top: 150px;
+  font-size: 50px;
+  margin-top: 80px;
   text-align: center;
 }
 .control-p {
-  margin-top: 50px;
+  margin-top: 40px;
   text-align: center;
-  font-size: 20px;
+  font-size: 40px;
   margin: 10px 5px;
+}
+.create-code {
+  font-size: 40px;
+  margin-left: 550px;
 }

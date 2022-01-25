@@ -8,7 +8,7 @@ const io = socketio(server);
 
 const mongo = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb+srv://nati:WuX3NF5mghh8ncxh@cluster0.8k9zf.mongodb.net/brick_breaker?retryWrites=true&w=majority";
+const url = process.env.REACT_APP_DB_URL;
 
 
 const rooms = {};
