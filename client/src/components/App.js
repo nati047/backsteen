@@ -1,4 +1,4 @@
-import "./App.css";
+import "./Game.css";
 import Canvas from "./Canvas";
 import Start from "./Start";
 import Leaders from "./Leaders";
@@ -7,7 +7,7 @@ import socketIoClient from "socket.io-client";
 import React, { useRef, useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-const END_POINT = "http://localhost:8080";
+const END_POINT = process.env.REACT_APP_BACK_END_POINT;
 const socket = socketIoClient(END_POINT); // connection to backend
 
 function App() {

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import Canvas from "./Canvas";
 import "./Style.css";
-
+import {Howl} from "howler";
+import audio from "../testAudio.mp3"
 
 function Start({socket}) {
 // console.log("props in start", socket)
@@ -10,6 +11,20 @@ function Start({socket}) {
   const [code, setCode] = useState('')
   const [mode, setMode] = useState('');  
   const [randomCode, setRandomCode] = useState('');
+  // useEffect(() => {
+  //   const sound = new Howl({
+  //     src: audio,
+  //     html5: true
+  //   });
+  //   console.log(sound)
+  //   sound.volume = 10;
+  //   sound.loop = true;
+  //   sound.play();
+  //   // setTimeout(() => {
+  //   //   sound.stop();
+  //   // }, 5000);
+  // },[])
+
 
   const handleSubmit = () => {
     console.log("submitted");
@@ -29,7 +44,7 @@ function Start({socket}) {
   const createGameHandler = () => {
     let c = generateCode();
     setRandomCode(c);
-    socket.emit('createGame', { code: c})
+    socket.emit('createGame', { code: c, name})
     console.log(randomCode);
     setMode('create');
   };
@@ -45,22 +60,22 @@ function Start({socket}) {
   };
 
   const handleCodeSubmit = (e) => {
-    socket.emit('checkCode', code);
+    socket.emit('checkCode', {code, name});
     setMode('checkingCode');
   };
 
   const handleCodeChange = (e) =>{
-    setCode(e.target.value)
+    setCode(e.target.value);
   };
 
   socket.on('matched', () =>{
     console.log('sending you to the game');
-    // socket.emit('playerName', {name, code});
+    socket.emit('playerName', {name, code});
     setMode("codeAccepted");
   });
 
   return (
-    <div>
+    <div className="start-menu">
       <h1 className="title">Welcome To Multiplaer Brick Game</h1>
 
       {mode === "" && (
