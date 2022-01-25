@@ -5,9 +5,10 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-// const mongo = require('mongodb');
-// const MongoClient = require('mongodb').MongoClient;
-// const url = "mongodb+srv://nati:WuX3NF5mghh8ncxh@cluster0.8k9zf.mongodb.net/brick_breaker?retryWrites=true&w=majority";
+
+const mongo = require('mongodb');
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb+srv://nati:WuX3NF5mghh8ncxh@cluster0.8k9zf.mongodb.net/brick_breaker?retryWrites=true&w=majority";
 
 
 const rooms = {};
@@ -73,7 +74,7 @@ class Bricks {
 };
 
 
-const  collision = (brick, ball, player) => {
+const  collision = (brick, ball, player, room) => {
   for (let i = 0; i < brick.columns; i++) {
     for (let v = 0; v < brick.rows; v++) {
       const b = brick.bricks[i][v];
@@ -86,6 +87,7 @@ const  collision = (brick, ball, player) => {
         ) {
           ball.dy = -ball.dy;
           b.status = 0;
+          io.in(room).emit('brickHit');
           player.score += 100;
         }
       }
@@ -97,7 +99,7 @@ const reset = (paddle, ball, player, state) => {
     player.lives -= 1;
     if (player.lives > 0) {
       ball.x = paddle.x + paddle.width / 2;
-      ball.y = canvasWidth - paddle.height - ball.radius - 1;
+      ball.y = canvasWidth - paddle.height - ball.radius - 1.5;
   
       const timeOut = setTimeout(() => {
         player.gamePause = false;
@@ -110,13 +112,17 @@ const reset = (paddle, ball, player, state) => {
 
 
 
-const bounce = (paddle, ball, player, state) => {
+const bounce = (paddle, ball, player, state, room) => {
 
   if (ball.x + ball.dx > canvasWidth - ball.radius || ball.x + ball.dx < ball.radius) {
     ball.dx = - ball.dx;
   }
   if (ball.y + ball.radius >= canvasHeight - paddle.height && (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) || ball.y <= ball.radius) {
     ball.dy = -ball.dy;
+    if((ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) && (ball.y + ball.radius >= canvasHeight - paddle.height) && !player.gamePause) {
+      console.log('paddle hit emit')
+      io.in(room).emit('paddleHit');
+    }
   } else if (ball.y + ball.radius > canvasHeight - paddle.height && !(ball.x > paddle.x && ball.x < paddle.x + paddle.width)) {
     reset(paddle, ball, player, state);
     // ball.dy = -ball.dy; // @TODO fix this 
@@ -136,10 +142,10 @@ const noBricks = (player, state, brick) => {
   player.win = true;
 }
 
-const updateGame = (ball, bricks, state, paddle, player) => {
+const updateGame = (ball, bricks, state, paddle, player, room) => {
   ball.update();
-  collision(bricks, ball, player);
-  bounce(paddle, ball, player, state);
+  collision(bricks, ball, player, room);
+  bounce(paddle, ball, player, state, room);
   noBricks(player, state, bricks);
   // reset(paddle,ball, player)
 };
@@ -152,9 +158,11 @@ io.on("connection", (socket) => {
     console.log("player name ", msg.name)
     rooms[msg.code] = {
       players: [],
+      playerNames: [],
       state: {}
     };
-    rooms[msg.code].players.push(msg.name);
+    rooms[msg.code].players.push(socket.id);
+    rooms[msg.code].playerNames.push(msg.name);
     socket.join(`${msg.code}`, () => {
       console.log('rooms', rooms);
     })
@@ -165,7 +173,8 @@ io.on("connection", (socket) => {
     if (rooms[msg.code]) {
       console.log('room exists');
       if (rooms[msg.code].players.length === 1) {
-        rooms[msg.code].players.push(msg.name);
+        rooms[msg.code].players.push(socket.id);
+        rooms[msg.code].playerNames.push(msg.name);
         socket.join(`${msg.code}`, () => {
           console.log('joined game')
           runGame(msg.code);
@@ -190,19 +199,19 @@ io.on("connection", (socket) => {
     bricks2.fillBricks();
     const state = {
       player1: {
-        name: rooms[code].players[0],
+        name: rooms[code].playerNames[0],
         lose: false,
         win: false,
         score: 0,
-        lives: 4,
+        lives: 10,
         gamePause: false,
       },
       player2: {
-        name: rooms[code].players[1],
+        name: rooms[code].playerNames[1],
         lose: false,
         win: false,
         score: 0,
-        lives: 4,
+        lives: 10,
         gamePause: false,
       },
       gameOver: false,
@@ -214,10 +223,10 @@ io.on("connection", (socket) => {
       bricks2
     };
     rooms[code].state = state;
-    console.log('rooms of code --',rooms[code])
+    // console.log('rooms of code --',rooms[code])
     const gameInterval = setInterval(() => {
-      if (!state.player1.gamePause) updateGame(ball1, bricks1, state, paddle1, state.player1);
-      if (!state.player2.gamePause) updateGame(ball2, bricks2, state, paddle2, state.player2);
+      if (!state.player1.gamePause) updateGame(ball1, bricks1, state, paddle1, state.player1, code);
+      if (!state.player2.gamePause) updateGame(ball2, bricks2, state, paddle2, state.player2, code);
       if (!state.gameOver) {
         io.in(code).emit('gameState', { state, roomName: code });   // send game info to a room 
       } else {  // when game is over 
@@ -228,9 +237,8 @@ io.on("connection", (socket) => {
           winner = state.player1
         }
         clearInterval(gameInterval);
-        console.log(winner);
         io.in(code).emit('gameOver', { winner: winner.name, score: winner.score });
-        // addToDatabase({name: winner.name, score: winner.score });
+        addToDatabase({name: winner.name, score: winner.score });
       }
 
     }, 1000 / 60);
@@ -251,9 +259,8 @@ io.on("connection", (socket) => {
   });
   
   socket.on('restart', roomName => {
-    console.log("restart game", roomName);
     runGame(roomName);
-  })
+  });
 
 });
 
@@ -262,17 +269,17 @@ server.listen(PORT, () => {
 })
 
 
-// function addToDatabase (obj) {
+function addToDatabase (obj) {
   
-//   MongoClient.connect(url, function(err, db) {
-//     if (err) throw err;
-//     const dbo = db.db("brick_breaker");
-//     const myobj = obj;
-//     dbo.collection("scores").insertOne(myobj, function(err, res) {
-//       if (err) throw err;
-//       console.log("1 document inserted");
-//       db.close();
-//     });
-//   });
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    const dbo = db.db("brick_breaker");
+    const myobj = obj;
+    dbo.collection("scores").insertOne(myobj, function(err, res) {
+      if (err) throw err;
+      console.log("1 document inserted");
+      db.close();
+    });
+  });
 
-// }; 
+}; 
