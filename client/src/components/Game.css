@@ -5,33 +5,39 @@ body {
 .main-container{
   display: flex;
   flex-direction: column;
-  border:brown solid 2px;
+  border:rgb(253, 248, 248) solid 10px;
+  border-style: outset;
 }
 .board{
   display: flex;
 }
 .left-canvas{
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
+  background-image: url(../gameBackground.jpg);
+  background-size: cover;
 }
+
 .right-canvas{
-  background-color: rgb(201, 253, 81);
+  /* background-color: rgb(201, 253, 81); */
+  background-image: url(../gameBackground.jpg);
+  background-size: cover;
 }
 .score-canvas {
-  background-color: #282c34;
+  background-color: rgba(255, 255, 255, 0.966);
 }
 .main-container {
   box-shadow: rgb(36, 39, 49) 0 0 10px 5px;
 }
 .n-or-h{
   display: flex;
-  background-color: #282c34;
+  background-color: rgba(255, 255, 255, 0.966);
   /* justify-content: space-around; */
 }
 .restart-btn {
   font-size: larger;
-  width: 150px;
+  width: 175px;
   color:brown;
-  font-family: "bungee";
+  font-family: "Press Start 2p";
   align-self: center;
   background-color: chartreuse;
 }
@@ -40,11 +46,14 @@ body {
   background-color: chartreuse;
   width: 150px;
   color:brown;
-  font-family: "bungee";
+  font-family: "Press Start 2p";
   align-self: center;
   
 }
 .home-link{
   text-decoration: none;
   color:brown;
+}
+.lc{
+  border-right: white 2px solid;
 }

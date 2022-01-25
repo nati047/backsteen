@@ -41,17 +41,17 @@ function Canvas({ socket }) {
 
   const drawScore = (ctx, canvas, state) => {
 
-    ctx.font = "40px Arial";
-    ctx.fillStyle = 'brown';
+    ctx.font = "40px bungee";
+    ctx.fillStyle = 'black';
     ctx.fillText(state.player1.name, canvas.width / 2 - 160, 50);
 
-    ctx.font = "40px Arial";
+    ctx.font = "40px bungee";
     ctx.fillText(state.player2.name, canvas.width / 2 + 25, 50);
     // player 1 score
-    ctx.font = "60 Arial";
+    ctx.font = "60 bungee";
     ctx.fillText(state.player1.score, canvas.width / 4 - 50, canvas.height / 2);
     // player 2 score
-    ctx.font = "60 Arial";
+    ctx.font = "60 bungee";
     ctx.fillText(state.player2.score, canvas.width * 3 / 4 - 50, canvas.height / 2);
 
     //line
@@ -59,7 +59,7 @@ function Canvas({ socket }) {
     ctx.lineWidth = 5;
     ctx.moveTo(canvas.width / 2, 20);
     ctx.lineTo(canvas.width / 2, canvas.height - 20);
-    ctx.strokeStyle = "white"
+    ctx.strokeStyle = "black"
     ctx.stroke();
     ctx.closePath();
     // player 1 lives
@@ -77,7 +77,7 @@ function Canvas({ socket }) {
       for (let x = 0; x < state.player2.lives; x++) {
         ctx.beginPath();
         ctx.fillStyle = "red";
-        ctx.arc(1150 - 20 * x, 50, 7.5, 0, Math.PI * 2);
+        ctx.arc(950 - 20 * x, 50, 7.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.closePath();
       }
@@ -95,19 +95,14 @@ function Canvas({ socket }) {
     canvas1.height = canvasHeight;
     canvas2.width = canvasWidth;
     canvas2.height = canvasHeight;
-    scoreCanvas.width = 1000;
+    scoreCanvas.width = 1002;
     scoreCanvas.height = 200;
     const ctx1 = canvas1.getContext('2d');
     const ctx2 = canvas2.getContext('2d');
     const ctx3 = scoreCanvas.getContext('2d');
 
-    // const background = new Image();
-    // background.src = "./background.jpg";
-
-    // background.onload = function () {
-    //   ctx1.drawImage(background,0 , 0, canvasWidth, canvasHeight);
-    // }
-    ///////////////////////////////////////////////
+    
+    /////////////////////////////////////////////
     const drawPaddle = (ctx, paddle) => {
       ctx.beginPath();
       ctx.rect(paddle.x, canvasHeight - paddle.height, paddle.width, paddle.height);
@@ -136,12 +131,12 @@ function Canvas({ socket }) {
     };
 
     const drawGameOver = (data, ctx, canvas) => {
-      ctx.fillStyle = 'white';
-      ctx.font = "30px Arial";
+      ctx.fillStyle = 'black';
+      ctx.font = "30px bungee";
       ctx.fillText("Game Over", canvas.width / 2 - 160, 50);
-      ctx.font = "60px Arial";
+      ctx.font = "60px bungee";
       ctx.fillText(`${data.winner} Wins 🏆`, canvas.width / 2 - 250, 100);
-      ctx.font = "40px Arial";
+      ctx.font = "40px bungee";
       ctx.fillText(`Score: ${data.score}`, canvas.width / 2 - 160, 150);
     };
 
@@ -187,14 +182,16 @@ function Canvas({ socket }) {
     <div className="main-container">
       <div className="n-or-h">
         <button className="restart-btn" onClick={handleRestart}>New Game</button>
-        <button className="home-btn" ><Link className="home-link" to="/" > home </Link></button>
+        <button className="home-btn" ><Link className="home-link" to="/" > Home </Link></button>
       </div>
       <div className="score-board">
         <canvas ref={scoreCanvasRef} className='score-canvas' ></canvas>
       </div>
 
       < div className='board'>
-        <canvas ref={canvasRef} className='left-canvas' ></canvas>
+        <div className="lc">
+          <canvas ref={canvasRef} className='left-canvas' ></canvas>
+        </div>
         <canvas ref={canvas2Ref} className='right-canvas'  ></canvas>
       </div>
     </div>

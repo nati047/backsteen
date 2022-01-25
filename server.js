@@ -13,14 +13,14 @@ const url = "mongodb+srv://nati:WuX3NF5mghh8ncxh@cluster0.8k9zf.mongodb.net/bric
 
 const rooms = {};
 // canvas
-canvasWidth = 600;
-canvasHeight = 600;
+canvasWidth = 500;
+canvasHeight = 500;
 
 class Ball {
   constructor() {
     this.x = 150;
     this.y = 300;
-    this.radius = 10;
+    this.radius = 8;
     this.dx = 5;
     this.dy = -5;
   }
