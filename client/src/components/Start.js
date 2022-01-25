@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import Canvas from "./Canvas";
 import "./Style.css";
-
+import {Howl} from "howler";
+import audio from "../testAudio.mp3"
 
 function Start({socket}) {
 // console.log("props in start", socket)
@@ -10,6 +11,20 @@ function Start({socket}) {
   const [code, setCode] = useState('')
   const [mode, setMode] = useState('');  
   const [randomCode, setRandomCode] = useState('');
+  // useEffect(() => {
+  //   const sound = new Howl({
+  //     src: audio,
+  //     html5: true
+  //   });
+  //   console.log(sound)
+  //   sound.volume = 10;
+  //   sound.loop = true;
+  //   sound.play();
+  //   // setTimeout(() => {
+  //   //   sound.stop();
+  //   // }, 5000);
+  // },[])
+
 
   const handleSubmit = () => {
     console.log("submitted");
@@ -60,7 +75,7 @@ function Start({socket}) {
   });
 
   return (
-    <div>
+    <div className="start-menu">
       <h1 className="title">Welcome To Multiplaer Brick Game</h1>
 
       {mode === "" && (

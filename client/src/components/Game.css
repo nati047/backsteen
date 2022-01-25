@@ -1,0 +1,50 @@
+body {
+  background-color:rgb(5,6,11);
+}
+
+.main-container{
+  display: flex;
+  flex-direction: column;
+  border:brown solid 2px;
+}
+.board{
+  display: flex;
+}
+.left-canvas{
+  background-color: aquamarine;
+}
+.right-canvas{
+  background-color: rgb(201, 253, 81);
+}
+.score-canvas {
+  background-color: #282c34;
+}
+.main-container {
+  box-shadow: rgb(36, 39, 49) 0 0 10px 5px;
+}
+.n-or-h{
+  display: flex;
+  background-color: #282c34;
+  /* justify-content: space-around; */
+}
+.restart-btn {
+  font-size: larger;
+  width: 150px;
+  color:brown;
+  font-family: "bungee";
+  align-self: center;
+  background-color: chartreuse;
+}
+.home-btn {
+  font-size: larger;
+  background-color: chartreuse;
+  width: 150px;
+  color:brown;
+  font-family: "bungee";
+  align-self: center;
+  
+}
+.home-link{
+  text-decoration: none;
+  color:brown;
+}

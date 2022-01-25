@@ -1,12 +1,14 @@
 const PORT = 8080;
 const express = require("express");
-
 const socketio = require("socket.io");
 const http = require("http");
-
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
+const mongo = require('mongodb');
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb+srv://nati:WuX3NF5mghh8ncxh@cluster0.8k9zf.mongodb.net/brick_breaker?retryWrites=true&w=majority";
+
 
 const rooms = {};
 // canvas
@@ -36,9 +38,9 @@ class Paddle {
   }
   update(direction, canvasWidth) {
     if (direction === 'left')
-      this.x -= 10;
+      this.x -= 20;
     if (direction === 'right')
-      this.x += 10;
+      this.x += 20;
     if (this.x < 0)
       this.x = 0;
     if (this.x + this.width > canvasWidth)
@@ -49,28 +51,27 @@ class Paddle {
 class Bricks {
   constructor() {
     this.bricks = [];
-    this.columns = 9;
-    this.rows = 5;
-    this.height = 20;
-    this.width = 75;
+    this.columns = 18;
+    this.rows = 10;
+    this.height = 10;
+    this.width = 37.5;
     this.padding = 2;
     this.OffsetTop = 30;
     this.OffsetLeft = 0;
   }
-  fillBricks() {
 
+  fillBricks() {
     for (let i = 0; i < this.columns; i++) {
       this.bricks[i] = [];
       for (let v = 0; v < this.rows; v++) {
         this.bricks[i][v] = { x: 0, y: 0, status: 1 };
         this.bricks[i][v].x = i * (this.width + this.padding) + this.OffsetLeft;
         this.bricks[i][v].y = v * (this.height + this.padding) + this.OffsetTop;
-
       }
     }
   };
-
 };
+
 
 const  collision = (brick, ball, player) => {
   for (let i = 0; i < brick.columns; i++) {
@@ -78,10 +79,10 @@ const  collision = (brick, ball, player) => {
       const b = brick.bricks[i][v];
       if (b.status == 1) {
         if (
-          ball.x > b.x &&
-          ball.x < b.x + brick.width &&
-          ball.y > b.y &&
-          ball.y < b.y + brick.height
+          ball.x  > b.x &&
+          ball.x  < b.x + brick.width &&
+          ball.y - ball.radius > b.y &&
+          ball.y - ball.radius < b.y + brick.height
         ) {
           ball.dy = -ball.dy;
           b.status = 0;
@@ -237,16 +238,21 @@ io.on("connection", (socket) => {
 
   socket.on('keyDown', msg => { // move paddle depending on socket where keypress event originated
     if(rooms[msg.roomName]) {
-      if (socket.id === rooms[msg.roomName].players[0] && msg.key === "ArrowRight") rooms[msg.roomName].state.paddle1.update("right", canvasWidth);
-      if (socket.id === rooms[msg.roomName].players[0] && msg.key === "ArrowLeft") rooms[msg.roomName].state.paddle1.update("left", canvasWidth);
-      if (socket.id === rooms[msg.roomName].players[1] && msg.key === "ArrowRight") rooms[msg.roomName].state.paddle2.update("right", canvasWidth);
-      if (socket.id === rooms[msg.roomName].players[1] && msg.key === "ArrowLeft") rooms[msg.roomName].state.paddle2.update("left", canvasWidth);
+      if(!rooms[msg.roomName].state.player1.gamePause){
+        if (socket.id === rooms[msg.roomName].players[0] && msg.key === "ArrowRight") rooms[msg.roomName].state.paddle1.update("right", canvasWidth);
+        if (socket.id === rooms[msg.roomName].players[0] && msg.key === "ArrowLeft") rooms[msg.roomName].state.paddle1.update("left", canvasWidth);
+      }
+      if(!rooms[msg.roomName].state.player2.gamePause){
+        if (socket.id === rooms[msg.roomName].players[1] && msg.key === "ArrowRight") rooms[msg.roomName].state.paddle2.update("right", canvasWidth);
+        if (socket.id === rooms[msg.roomName].players[1] && msg.key === "ArrowLeft") rooms[msg.roomName].state.paddle2.update("left", canvasWidth);
+      }
     }
   });
   
-  // socket.on('playerName', (data) => {
-  //   console.log("player name", data.name, "  ",data.code);
-  // });
+  socket.on('restart', roomName => {
+    console.log("restart game", roomName);
+    runGame(roomName);
+  })
 
 });
 
@@ -255,4 +261,17 @@ server.listen(PORT, () => {
 })
 
 
+// function dataBase (obj) {
+  
+//   MongoClient.connect(url, function(err, db) {
+//     if (err) throw err;
+//     const dbo = db.db("brick_breaker");
+//     const myobj = obj;
+//     dbo.collection("scores").insertOne(myobj, function(err, res) {
+//       if (err) throw err;
+//       console.log("1 document inserted");
+//       db.close();
+//     });
+//   });
 
+// }; 

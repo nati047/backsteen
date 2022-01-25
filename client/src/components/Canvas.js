@@ -1,9 +1,9 @@
-import './App.css';
+import './Game.css';
 import socketIoClient from "socket.io-client";
 import React, { useRef, useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
-function Canvas({ option, socket }) {
+function Canvas({  socket }) {
   const canvasRef = useRef();
   const canvas2Ref = useRef();
   const scoreCanvasRef = useRef();
@@ -31,19 +31,16 @@ function Canvas({ option, socket }) {
   const drawScore = (ctx, canvas, state) =>{
     
     ctx.font = "40px Arial";
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'brown';
     ctx.fillText("Player 1", canvas.width / 2 - 160, 50);
 
     ctx.font = "40px Arial";
-    ctx.fillStyle = 'white';
     ctx.fillText("Player 2", canvas.width / 2 + 25, 50);
     // player 1 score
     ctx.font = "60 Arial";
-    ctx.fillStyle = 'white';
     ctx.fillText(state.player1.score, canvas.width / 4 - 50 , canvas.height / 2);
     // player 2 score
     ctx.font = "60 Arial";
-    ctx.fillStyle = 'white';
     ctx.fillText(state.player2.score, canvas.width * 3 / 4 - 50 , canvas.height / 2);
 
     //line
@@ -143,7 +140,6 @@ const drawGameOver = (data, ctx, canvas) => {
     });  
 
     socket.on('gameOver', data => {
-      console.log('game over', data);
       ctx3.clearRect(0, 0, scoreCanvas.width, scoreCanvas.height);
       drawGameOver(data, ctx3, scoreCanvas);
     });
@@ -155,10 +151,18 @@ const drawGameOver = (data, ctx, canvas) => {
   document.addEventListener('keydown', (e) =>{
     console.log(socket.id, "pressed keyboadrd")
     socket.emit('keyDown', {key: e.key, roomName});
-  })
+  });
+  const handleRestart = () => {
+    console.log("room name",roomName);
+    socket.emit('restart', roomName);
+  }
 
   return (
     <div className="main-container">
+      <div className="n-or-h">
+        <button className="restart-btn" onClick={handleRestart}>New Game</button>
+        <button className="home-btn" ><Link className="home-link" to="/" > home </Link></button>
+      </div>
       <div className="score-board">
         <canvas ref={scoreCanvasRef} className='score-canvas' ></canvas>
       </div>
