@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import Canvas from "./Canvas";
 import "./Style.css";
+import logo from "../brick.png";
 
-
-function Start({socket}) {
-// console.log("props in start", socket)
-  const [name, setName] = useState('');  
-  const [code, setCode] = useState('')
-  const [mode, setMode] = useState('');  
-  const [randomCode, setRandomCode] = useState('');
+function Start({ socket }) {
+  // console.log("props in start", socket)
+  const [name, setName] = useState("");
+  const [code, setCode] = useState("");
+  const [mode, setMode] = useState("");
+  const [randomCode, setRandomCode] = useState("");
 
   const handleSubmit = () => {
     console.log("submitted");
@@ -29,12 +29,12 @@ function Start({socket}) {
   const createGameHandler = () => {
     let c = generateCode();
     setRandomCode(c);
-    socket.emit('createGame', { code: c})
+    socket.emit("createGame", { code: c });
     console.log(randomCode);
-    setMode('create');
+    setMode("create");
   };
 
-  const joinGameHandler = () =>{
+  const joinGameHandler = () => {
     // socket.emit('joined game')
     console.log("join game clicked");
     setMode("join");
@@ -45,23 +45,30 @@ function Start({socket}) {
   };
 
   const handleCodeSubmit = (e) => {
-    socket.emit('checkCode', code);
-    setMode('checkingCode');
+    socket.emit("checkCode", code);
+    setMode("checkingCode");
   };
 
-  const handleCodeChange = (e) =>{
-    setCode(e.target.value)
+  const handleCodeChange = (e) => {
+    setCode(e.target.value);
   };
 
-  socket.on('matched', () =>{
-    console.log('sending you to the game');
+  socket.on("matched", () => {
+    console.log("sending you to the game");
     // socket.emit('playerName', {name, code});
     setMode("codeAccepted");
   });
 
   return (
     <div>
-      <h1 className="title">Welcome To Multiplaer Brick Game</h1>
+      <div>
+        <img className="image" src={logo} alt="logo" />
+        <Link to="/controls">
+          <h3 className="controls">How to play</h3>
+        </Link>
+      </div>
+
+      <h1 className="title">Baksteen Game </h1>
 
       {mode === "" && (
         <form onSubmit={handleSubmit}>
@@ -76,7 +83,7 @@ function Start({socket}) {
           ></input>
           <div>
             <button className="button" type="submit">
-              Next
+              &#9655;
             </button>
           </div>
         </form>
@@ -99,7 +106,7 @@ function Start({socket}) {
         </div>
       )}
       {mode === "create" && (
-        <div>
+        <div className="create-code">
           <h3>copy game code and send to friend</h3>
           <h1> game code : {randomCode}</h1>
           <h3>waiting for other player to join</h3>
@@ -119,16 +126,15 @@ function Start({socket}) {
           ></input>
           <div>
             <button className="button" type="submit">
-              Next
+              &#9655;
             </button>
           </div>
         </form>
       )}
-      <Link to="/controls">
-        <h3 className="controls">How to play</h3>
-      </Link>
 
-      {mode === "checkingCode" && <h1>checking code</h1>}
+      {mode === "checkingCode" && (
+        <h1 className="create-code">checking code</h1>
+      )}
       {mode === "codeAccepted" && <Navigate to="/game" />}
     </div>
   );
