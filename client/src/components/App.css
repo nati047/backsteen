@@ -1,10 +1,11 @@
 body {
-  background-color: #9eb5e2;
+  background-color:rgb(5,6,11);
 }
 
 .main-container{
   display: flex;
   flex-direction: column;
+  border:brown solid 2px;
 }
 .board{
   display: flex;
@@ -17,4 +18,33 @@ body {
 }
 .score-canvas {
   background-color: #282c34;
+}
+.main-container {
+  box-shadow: rgb(36, 39, 49) 0 0 10px 5px;
+}
+.n-or-h{
+  display: flex;
+  background-color: #282c34;
+  /* justify-content: space-around; */
+}
+.restart-btn {
+  font-size: larger;
+  width: 150px;
+  color:brown;
+  font-family: "bungee";
+  align-self: center;
+  background-color: chartreuse;
+}
+.home-btn {
+  font-size: larger;
+  background-color: chartreuse;
+  width: 150px;
+  color:brown;
+  font-family: "bungee";
+  align-self: center;
+  
+}
+.home-link{
+  text-decoration: none;
+  color:brown;
 }
