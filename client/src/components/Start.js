@@ -83,9 +83,9 @@ function Start({ socket }) {
           </div>
         </form>
       )}
-      {/* <Link to="/leaders">
+      <Link to="/leaders">
         <h3>leadersBoard</h3>
-      </Link> */}
+      </Link>
 
       {mode === "gotName" && (
         <div>
