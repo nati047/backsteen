@@ -1,0 +1,10 @@
+.rt-tbody {
+  text-align: center;
+  color: orange;
+}
+
+.rt-thead {
+  padding-bottom: 20px;
+  font-weight: bold;
+  color: red;
+}
