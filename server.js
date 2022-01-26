@@ -10,9 +10,23 @@ const mongo = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb+srv://nati:WuX3NF5mghh8ncxh@cluster0.8k9zf.mongodb.net/brick_breaker?retryWrites=true&w=majority";
 
+function addToDatabase (obj) {
+  
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    const dbo = db.db("brick_breaker");
+    const myobj = obj;
+    dbo.collection("scores").insertOne(myobj, function(err, res) {
+      if (err) throw err;
+      console.log("1 document inserted");
+      db.close();
+    });
+  });
+
+}; 
 
 const rooms = {};
-// canvas
+
 canvasWidth = 500;
 canvasHeight = 500;
 
@@ -39,9 +53,9 @@ class Paddle {
   }
   update(direction, canvasWidth) {
     if (direction === 'left')
-      this.x -= 15;
+      this.x -= 17.5;
     if (direction === 'right')
-      this.x += 15;
+      this.x += 17.5;
     if (this.x < 0)
       this.x = 0;
     if (this.x + this.width > canvasWidth)
@@ -202,7 +216,7 @@ io.on("connection", (socket) => {
         lose: false,
         win: false,
         score: 0,
-        lives: 10,
+        lives: 5,
         gamePause: false,
       },
       player2: {
@@ -210,7 +224,7 @@ io.on("connection", (socket) => {
         lose: false,
         win: false,
         score: 0,
-        lives: 10,
+        lives: 5,
         gamePause: false,
       },
       gameOver: false,
@@ -270,17 +284,3 @@ server.listen(PORT, () => {
 })
 
 
-function addToDatabase (obj) {
-  
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    const dbo = db.db("brick_breaker");
-    const myobj = obj;
-    dbo.collection("scores").insertOne(myobj, function(err, res) {
-      if (err) throw err;
-      console.log("1 document inserted");
-      db.close();
-    });
-  });
-
-}; 
