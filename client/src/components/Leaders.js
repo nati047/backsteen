@@ -1,25 +1,40 @@
-import React from "react";
+import React, { Component } from 'react'
+import "./Leaders.css";
+import axios from "axios";
+import ReactTable from "react-table-6";
+import "react-table-6/react-table.css" 
 
-function Leaders () {
-  
-  return (
-  <html>
-	<head>
-	    <title>LeaderBoard</title>
-	</head>
-
-	<body>
-		<h2>High Scores</h2>
-		<table>
-			<tr>
-				<td>Ranking</td>
-				<td>UserName</td>
-				<td>Score</td>
-			</tr>
-        </table>
-    </body>
-  </html>
-  )
-};
-
-export default Leaders;
+export default class App extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      users: [],
+      loading:true
+    }
+  }
+  async getUsersData(){
+    const res = await axios.get('http://localhost:8081')
+    console.log(res.data)
+    this.setState({loading:false, users: res.data})
+  }
+  componentDidMount(){
+    this.getUsersData()
+  }
+  render() {
+    const columns = [{  
+      Header: 'Username',  
+      accessor: 'name' ,
+      },
+     {  
+      Header: 'Score',  
+      accessor: 'score',
+      },
+  ]
+    return (
+      <ReactTable  
+      data={this.state.users}  
+      columns={columns}  
+   />
+    )
+  }
+}
