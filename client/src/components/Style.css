@@ -98,6 +98,16 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.leaders {
+  margin-top: -80px;
+  margin-left: 550px;
+  font-size: 40px;
+  text-decoration: none;
+  background: linear-gradient(to right, #ee0979, #d7e38a, #0c0a8a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .control-back {
   font-size: 120px;
   margin-top: 50px;
@@ -120,8 +130,8 @@ body {
   margin: 10px 5px;
 }
 .create-code {
-  font-size: 45px;
-  margin-left: 550px;
+  font-size: 30px;
+  margin-left: 440px;
 }
 
 .control-back {
