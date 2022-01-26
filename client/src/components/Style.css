@@ -66,6 +66,10 @@ body {
   font-size: 20px;
 }
 
+.lol {
+  font-size: 30px;
+  color: red;
+}
 .button-create {
   font-size: 50px;
   margin-left: 550px;
