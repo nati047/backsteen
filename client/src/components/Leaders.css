@@ -1,110 +1,18 @@
-html, body, h1 {
-  margin: 0; padding: 0;
-}
-
-body {
-  font-family: 'Unica One', sans-serif;
-}
-
-header {
-  display: flex;
-  flex: 2;
-  justify-content: center;
-  align-items: center;
-  background-color: lightcoral;
-  width: 100%;
-}
-
-article {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 8;
-}
-
-footer {
-  display: flex;
-  flex: 0.5;
-  justify-content: center;
-  align-items: center;
-}
-
-h1 {    
-  font-size: 2em;
-  text-transform: uppercase;
-}
-
-table {
-  min-width: 320px;
-  border-collapse: collapse;
-  white-space: nowrap;
-}
-
-thead {
-  background-color: black;
-  color: white;
-  font-size: 100%;
-}
-
-table, th, td {
-  border: 1px solid black;
-}
-
-a {
-  color: white;
-}
-
-
-.container {
-  width: 100vw; 
-  height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  background-color: beige;
-}
-
-.article {
-  background-color: aliceblue;
+.rt-tbody {
   text-align: center;
+  color: orange;
 }
 
-.footer {
-  width: 100%;
-  background-color: cadetblue;
-  text-align: center;
-}
-
-.scoreboard-score {
+.rt-thead {
+  padding-bottom: 20px;
   font-weight: bold;
-  font-size: 120%;
+  color: red;
 }
 
-.scoreboard-team {
-display: flex;
-justify-content: center;
-align-items: center;
+.rt-tfoot {
+  text-align: center;
 }
 
-
-/*
-span.scoreboard-team-logo-text {
-  position: absolute;
-  top: 50%;
-}
-*/
-
-img.scoreboard-team-logo {
-  width: 22pt;
-  padding-right: 0.5em;
-}
-
-@media only screen and (min-width: 850px) {
-td {
-  padding: 10px;
-}
-
+.ret {
+  color:red;
 }
