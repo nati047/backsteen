@@ -42,7 +42,7 @@ function Start({ socket }) {
   };
 
   const handleCodeSubmit = (e) => {
-    socket.emit("checkCode", {code, name});
+    socket.emit("checkCode", { code, name });
     setMode("checkingCode");
   };
 
@@ -60,6 +60,9 @@ function Start({ socket }) {
         <img className="image" src={logo} alt="logo" />
         <Link className="className=" controls to="/controls">
           <h3 className="controls">How to play</h3>
+          <Link to="/leaders">
+            <h3 className="leaders">Leaderoard</h3>
+          </Link>
         </Link>
       </div>
 
@@ -83,9 +86,6 @@ function Start({ socket }) {
           </div>
         </form>
       )}
-      {<Link to="/leaders" className="lol">
-        <h3>Leaderboard</h3>
-      </Link>}
 
       {mode === "gotName" && (
         <div>
