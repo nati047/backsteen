@@ -3,6 +3,8 @@ const express = require("express");
 const socketio = require("socket.io");
 const http = require("http");
 const app = express();
+const cors = require("cors");
+app.use(cors());
 const server = http.createServer(app);
 const io = socketio(server);
 
@@ -277,6 +279,18 @@ io.on("connection", (socket) => {
     }
   });
 
+});
+
+app.get("/", (req, res) => {
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("brick_breaker");
+    dbo.collection("scores").find().sort( { "score": -1 } ).toArray(function(err, result) {
+      if (err) throw err;
+        res.send(result);
+      db.close();
+    });
+  });
 });
 
 server.listen(PORT, () => {
