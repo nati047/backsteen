@@ -61,6 +61,7 @@ body {
   border-left: 20px solid black;
   height: 0px;
 }
+
 .gotname {
   margin-left: 250px;
   font-size: 20px;
@@ -107,7 +108,18 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
+.leaders-link{
+  text-decoration: none;
+}
+.leaders-link:hover{
+  text-shadow: 2px 0px;
+}
+.controls:hover {
+  text-shadow: 2px 0px;
+}
+.contols-link{
+  text-decoration: none;
+}
 .control-back {
   font-size: 120px;
   margin-top: 50px;

@@ -167,10 +167,8 @@ const updateGame = (ball, bricks, state, paddle, player, room) => {
 
 io.on("connection", (socket) => {
   console.log("socket connected", socket.id)
-  
   socket.on("createGame", (msg) => {
-    console.log("game started by: ", socket.id)
-    console.log("player name ", msg.name)
+
     rooms[msg.code] = {
       players: [],
       playerNames: [],
@@ -179,30 +177,24 @@ io.on("connection", (socket) => {
     rooms[msg.code].players.push(socket.id);
     rooms[msg.code].playerNames.push(msg.name);
     socket.join(`${msg.code}`, () => {
-      console.log('rooms', rooms);
     })
   });
 
   socket.on('checkCode', (msg) => {
-    console.log("name of joiner", msg.name);
     if (rooms[msg.code]) {
-      console.log('room exists');
       if (rooms[msg.code].players.length === 1) {
         rooms[msg.code].players.push(socket.id);
         rooms[msg.code].playerNames.push(msg.name);
         socket.join(`${msg.code}`, () => {
-          console.log('joined game')
           runGame(msg.code);
         });
         io.in(`${msg.code}`).emit('matched');
-        console.log('rooms after joined', rooms);
       }
     }
   });
 
   const runGame = (code) => {
 
-    console.log("room name", code);
     const ball1 = new Ball;
     const paddle1 = new Paddle;
     const bricks1 = new Bricks;
@@ -218,7 +210,7 @@ io.on("connection", (socket) => {
         lose: false,
         win: false,
         score: 0,
-        lives: 5,
+        lives: 8,
         gamePause: false,
       },
       player2: {
@@ -226,7 +218,7 @@ io.on("connection", (socket) => {
         lose: false,
         win: false,
         score: 0,
-        lives: 5,
+        lives: 8,
         gamePause: false,
       },
       gameOver: false,
@@ -238,7 +230,6 @@ io.on("connection", (socket) => {
       bricks2
     };
     rooms[code].state = state;
-    // console.log('rooms of code --',rooms[code])
     const gameInterval = setInterval(() => {
       if (!state.player1.gamePause) updateGame(ball1, bricks1, state, paddle1, state.player1, code);
       if (!state.player2.gamePause) updateGame(ball2, bricks2, state, paddle2, state.player2, code);

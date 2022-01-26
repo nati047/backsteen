@@ -1,7 +1,6 @@
 import './Game.css';
-import socketIoClient from "socket.io-client";
-import React, { useRef, useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import React, { useRef, useEffect } from "react";
+import {  Link } from "react-router-dom";
 import { Howl } from "howler";
 import paddleHit from "../paddleHit.mp3";
 import brickHit from "../brickSound.mp3";
@@ -12,7 +11,6 @@ function Canvas({ socket }) {
   const scoreCanvasRef = useRef();
   const canvasWidth = 500;
   const canvasHeight = 500;
-  let gameState;
   let roomName;
   // ball
   const paddleSound = new Howl({
@@ -100,9 +98,7 @@ function Canvas({ socket }) {
     const ctx1 = canvas1.getContext('2d');
     const ctx2 = canvas2.getContext('2d');
     const ctx3 = scoreCanvas.getContext('2d');
-
-    
-    /////////////////////////////////////////////
+    // draw elements on canvas
     const drawPaddle = (ctx, paddle) => {
       ctx.beginPath();
       ctx.rect(paddle.x, canvasHeight - paddle.height, paddle.width, paddle.height);
@@ -143,8 +139,7 @@ function Canvas({ socket }) {
       ctx.fillText(`Score: ${data.score}`, canvas.width / 2 - 160, 150);
     };
 
-    ///////////////////////////////////////////////
-    socket.on('gameState', data => {  // game data sent from server
+    socket.on('gameState', data => {  //recieve game data sent from server
       roomName = data.roomName;
       ctx1.clearRect(0, 0, canvasWidth, canvasHeight);
       ctx2.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -167,8 +162,6 @@ function Canvas({ socket }) {
       brickSound.play();
     });
 
-
-    // connection.emmit('noMoreBricks)
   }, []);
 
   document.addEventListener('keydown', (e) => {

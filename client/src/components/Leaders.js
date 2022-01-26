@@ -15,7 +15,6 @@ export default class App extends Component {
   }
   async getUsersData(){
     const res = await axios.get('http://localhost:8080')
-    console.log(res.data)
     this.setState({loading:false, users: res.data})
   }
   componentDidMount(){

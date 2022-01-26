@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
-import Canvas from "./Canvas";
 import "./Style.css";
 import logo from "../brick.png";
 
@@ -32,8 +31,6 @@ function Start({ socket }) {
   };
 
   const joinGameHandler = () => {
-    // socket.emit('joined game')
-    console.log("join game clicked");
     setMode("join");
   };
 
@@ -58,9 +55,9 @@ function Start({ socket }) {
     <div>
       <div>
         <img className="image" src={logo} alt="logo" />
-        <Link className="className=" controls to="/controls">
+        <Link className="contols-link" controls to="/controls">
           <h3 className="controls">How to play</h3>
-          <Link to="/leaders">
+          <Link className='leaders-link' to="/leaders">
             <h3 className="leaders">leadersBoard</h3>
           </Link>
         </Link>
