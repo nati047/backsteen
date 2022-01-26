@@ -5,14 +5,12 @@ import "./Style.css";
 import logo from "../brick.png";
 
 function Start({ socket }) {
-  // console.log("props in start", socket)
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const [mode, setMode] = useState("");
   const [randomCode, setRandomCode] = useState("");
 
   const handleSubmit = () => {
-    console.log("submitted");
     setMode("gotName");
   };
 
@@ -29,8 +27,7 @@ function Start({ socket }) {
   const createGameHandler = () => {
     let c = generateCode();
     setRandomCode(c);
-    socket.emit("createGame", { code: c });
-    console.log(randomCode);
+    socket.emit("createGame", { code: c, name });
     setMode("create");
   };
 
@@ -45,7 +42,7 @@ function Start({ socket }) {
   };
 
   const handleCodeSubmit = (e) => {
-    socket.emit("checkCode", code);
+    socket.emit("checkCode", {code, name});
     setMode("checkingCode");
   };
 
@@ -54,17 +51,8 @@ function Start({ socket }) {
   };
 
   socket.on("matched", () => {
-    console.log("sending you to the game");
-    // socket.emit('playerName', {name, code});
     setMode("codeAccepted");
   });
-  function validateForm() {
-    let x = document.forms["myForm"]["fname"].value;
-    if (x == "" || x == null) {
-      alert("initials must be filled out");
-      return false;
-    }
-  }
 
   return (
     <div>
