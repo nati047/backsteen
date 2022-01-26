@@ -1,4 +1,4 @@
-## Setup
+# Setup
 
 1. Run `npm install` to install all dependencies.
 2. Run `npm start` in the main backsteen folder.
