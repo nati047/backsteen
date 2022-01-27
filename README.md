@@ -1,5 +1,5 @@
 # Backsteen
-A multiplayer brick breaker game to enjoy with a friend. Players can create a game session and send a code to a friend so that they can join and play against eachother from anywhere, without the hastle of creating an account or loging in. They can see eachothers screen in a split screen format and compare their scores.
+A multiplayer brick breaker game to enjoy with a friend. Players can create a game session and send a code to a friend so that they can join and play against eachother from anywhere, without the hastle of creating an account or loging in. They can see each other's screen in a split screen format and compare their scores.
 # Setup
 
 1. Run `npm install` to install all dependencies.
