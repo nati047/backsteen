@@ -11,8 +11,9 @@ A multiplayer brick breaker game to enjoy with a friend. Players can create a ga
 
 # SCREENSHOTS 
 
+![""](https://github.com/nati047/backsteen/blob/master/screenshots/startPage.png?raw=true)
 ![""](https://github.com/nati047/backsteen/blob/master/screenshots/createVSjoin.png?raw=true)
-
- 
-
-
+![""](https://github.com/nati047/backsteen/blob/master/screenshots/code.png?raw=true)
+![""](https://github.com/nati047/backsteen/blob/master/screenshots/game.png?raw=true)
+![""](https://github.com/nati047/backsteen/blob/master/screenshots/win.png?raw=true)
+![""](https://github.com/nati047/backsteen/blob/master/screenshots/leaders.png?raw=true)
