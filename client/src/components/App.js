@@ -12,7 +12,7 @@ const socket = socketIoClient(END_POINT); // connection to backend
 
 
 function App() {
-
+console.log(END_POINT);
   return (
     <Router>
       <Routes>
