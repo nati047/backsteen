@@ -9,6 +9,17 @@ A multiplayer brick breaker game to enjoy with a friend. Players can create a ga
 4. Navigate to http://localhost:3000/ in your web browser to start the game!
 5. Please note that all codes should be sent as lowercase letters!
 
+# Tech Stack
+  ## Front End 
+    React.js
+    Html
+    Css
+    Bootstarp
+  ## Back End 
+    NodeJs
+    Express
+    Socket.io
+    MongoDb
 # SCREENSHOTS 
 
 ![""](https://github.com/nati047/backsteen/blob/master/screenshots/startPage.png?raw=true)
