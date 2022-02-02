@@ -58,7 +58,7 @@ function Start({ socket }) {
         <Link className="contols-link" controls to="/controls">
           <h3 className="controls">How to play</h3>
           <Link className='leaders-link' to="/leaders">
-            <h3 className="leaders">leadersBoard</h3>
+            <h3 className="leaders">Leaderboard</h3>
           </Link>
         </Link>
       </div>
