@@ -10,7 +10,8 @@ function Start({ socket }) {
   const [randomCode, setRandomCode] = useState("");
 
   const handleSubmit = () => {
-    setMode("gotName");
+    if(name)
+     setMode("gotName");
   };
 
   const generateCode = () => {
