@@ -7,12 +7,11 @@ import socketIoClient from "socket.io-client";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-const END_POINT = process.env.REACT_APP_BACK_END_POINT;
+const END_POINT = "https://backsteen.herokuapp.com/" || process.env.REACT_APP_BACK_END_POINT;
 const socket = socketIoClient(END_POINT); // connection to backend
 
 
 function App() {
-console.log(END_POINT);
   return (
     <Router>
       <Routes>

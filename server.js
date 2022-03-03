@@ -1,9 +1,13 @@
-const PORT = 8081;
+const PORT = process.env.PORT || 8081;
+const dotenv = require("dotenv");
+const path = require("path");
 const express = require("express");
 const socketio = require("socket.io");
 const http = require("http");
-const app = express();
 const cors = require("cors");
+
+dotenv.config();
+const app = express();
 app.use(cors());
 const server = http.createServer(app);
 const io = socketio(server);
@@ -216,7 +220,7 @@ io.on("connection", (socket) => {
 
 });
 
-app.get("/", (req, res) => {
+app.get("/db", (req, res) => {
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     let dbo = db.db("brick_breaker");
@@ -226,6 +230,12 @@ app.get("/", (req, res) => {
       db.close();
     });
   });
+});
+
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build'));
 });
 
 server.listen(PORT, () => {
