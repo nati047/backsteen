@@ -219,7 +219,7 @@ io.on("connection", (socket) => {
 app.get("/", (req, res) => {
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("brick_breaker");
+    let dbo = db.db("brick_breaker");
     dbo.collection("scores").find().sort( { "score": -1 } ).toArray(function(err, result) {
       if (err) throw err;
         res.send(result);

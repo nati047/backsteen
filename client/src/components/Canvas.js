@@ -110,7 +110,7 @@ function Canvas({ socket }) {
       ctx.closePath();
     }
 
-    function drawBall(ctx, ball) {
+    const drawBall = (ctx, ball) => {
       ctx.beginPath();
       ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
       ctx.fillStyle = "red";
@@ -182,7 +182,7 @@ function Canvas({ socket }) {
         <canvas ref={scoreCanvasRef} className='score-canvas' ></canvas>
       </div>
 
-      < div className='board'>
+      <div className='board'>
         <div className="lc">
           <canvas ref={canvasRef} className='left-canvas' ></canvas>
         </div>
