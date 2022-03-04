@@ -40,19 +40,26 @@ body {
   font-family: "Press Start 2p";
   align-self: center;
   background-color: chartreuse;
+  box-shadow:  0px 0px 4px black;
+  text-shadow: none;
+  margin-right: 2px ;
+  border: 1px solid black;
 }
-.home-btn {
-  font-size: larger;
-  background-color: chartreuse;
-  width: 150px;
-  color:brown;
-  font-family: "Press Start 2p";
-  align-self: center;
-  box-shadow:  2px 2px 2px black;
-}
+
 .home-link{
+  box-shadow:  0px 0px 4px black;
   text-decoration: none;
   color:brown;
+  font-size: 15px;
+  background-color: chartreuse;
+  width: 90px;
+  vertical-align: center;
+  padding: 2px;
+  color:brown;
+  font-family: "Press Start 2p";
+  text-align: center;
+  text-shadow: none;
+  border: 1px solid black;
 }
 .lc{
   border-right: white 2px solid;

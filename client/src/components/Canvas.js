@@ -176,7 +176,7 @@ function Canvas({ socket }) {
     <div className="main-container">
       <div className="n-or-h">
         <button className="restart-btn" onClick={handleRestart}>New Game</button>
-        <button className="home-btn" ><Link className="home-link" to="/" > Home </Link></button>
+        <Link className="home-link" to="/" > Home </Link>
       </div>
       <div className="score-board">
         <canvas ref={scoreCanvasRef} className='score-canvas' ></canvas>
