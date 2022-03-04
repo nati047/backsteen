@@ -184,5 +184,12 @@ a:hover, button:hover {
   padding: 20px;
   margin: 20px 10px;
 }
+.incorrect {
+  position: relative;
+  top: 250px;
+  text-align: center; 
+}
+.back{
+  font-size: 30px;
 
-
+}

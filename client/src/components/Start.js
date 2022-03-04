@@ -137,9 +137,9 @@ function Start({ socket }) {
       )}
       {mode === "codeAccepted" && <Navigate to="/game" />}
       {mode === "wrongCode" && 
-      <div>
+      <div className="incorrect">
         <h3>incorect code...start new game</h3>
-        <Link to="/game" />
+        <Link className="back" to="/game" >home</Link>
       </div>
       }
     </div>
