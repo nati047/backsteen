@@ -43,17 +43,12 @@ a {
 input {
   width: 70%;
   height: 15%;
-  background-color: #c28f5c;
+  background-color: #cabcae;
   border-radius: 20px;
   border: none;
   font-family: inherit;
   text-align: center;
 }
-
-/* .header {
-  font-size: 24px;
-  font-family: "Open Sans", sans-serif;
-} */
 .game-img{
   position: absolute;
   top: 0;
@@ -70,7 +65,7 @@ input {
   font-size: 60px;
   position: relative;
   top: 220px;
-  background: linear-gradient(to right, #ee0909, #1c14bd, #ebeb95);
+  background: linear-gradient(to right, #ee0909, #14bd2b, #ebeb95);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
@@ -124,16 +119,6 @@ a:hover, button:hover {
   position: relative;
   top: 250px;
 }
-
-/* .label-input {
-  margin-top: 30px;
-  margin-left: 400px;
-  font-size: 60px;
-}
-.label-join {
-  font-size: 50px;
-  margin-left: 480px;
-} */
 
 .play {
   border-top: 10px solid white;
