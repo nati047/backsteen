@@ -138,6 +138,9 @@ io.on("connection", (socket) => {
         io.in(`${msg.code}`).emit('matched');
       }
     }
+    else {
+      socket.emit('wrongCode');
+    }
   });
 
   const runGame = (code) => {
@@ -157,7 +160,7 @@ io.on("connection", (socket) => {
         lose: false,
         win: false,
         score: 0,
-        lives: 8,
+        lives: 5,
         gamePause: false,
       },
       player2: {
@@ -165,7 +168,7 @@ io.on("connection", (socket) => {
         lose: false,
         win: false,
         score: 0,
-        lives: 8,
+        lives: 5,
         gamePause: false,
       },
       gameOver: false,

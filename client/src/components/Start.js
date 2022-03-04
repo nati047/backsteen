@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import "./Style.css";
 import logo from "../brick.png";
+import gameBg from "../gameBg.png";
 
 function Start({ socket }) {
   const [name, setName] = useState("");
@@ -10,8 +11,9 @@ function Start({ socket }) {
   const [randomCode, setRandomCode] = useState("");
 
   const handleSubmit = () => {
-    if(name)
-     setMode("gotName");
+    if (name) {
+      setMode("gotName");
+    }
   };
 
   const generateCode = () => {
@@ -53,40 +55,42 @@ function Start({ socket }) {
   });
 
   return (
-    <div>
-      <div>
-        <img className="image" src={logo} alt="logo" />
-        <Link className="contols-link" controls to="/controls">
-          <h3 className="controls">How to play</h3>
-          <Link className='leaders-link' to="/leaders">
-            <h3 className="leaders">Leaderboard</h3>
-          </Link>
-        </Link>
-      </div>
-
-      <h1 className="title">Baksteen Game </h1>
+    <div className="main-div">
+      <img class="game-img" src={gameBg} />
+      <h3 className="title">Baksteen</h3>
 
       {mode === "" && (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label className="labelin">Please input your intials</label>
-          </div>
-          <input
-            className="label-input"
-            value={name}
-            type="text"
-            onChange={handleNameChange}
-          ></input>
-          <div>
-            <button className="button" type="submit">
-              &#9655;
-            </button>
-          </div>
-        </form>
+        <div className="start-page">
+
+          {/* <img className="image" src={logo} alt="logo" /> */}
+          <form className="name-form" onSubmit={handleSubmit}>
+            {/* <div className="lNi"> */}
+              <label className="labelin">
+                who can we call you?
+              </label>
+              <input
+                className="name-input"
+                value={name}
+                type="text"
+                onChange={handleNameChange}
+                placeholder="name"
+              />
+              <button className="paly-button" type="submit">
+                play
+              </button>
+            {/* </div> */}
+          </form>
+          <Link to="/controls">
+            <p >How to play</p>
+          </Link>
+          <Link to="/leaders">
+            <p className="leaders">Leaderboard</p>
+          </Link>
+        </div>
       )}
 
       {mode === "gotName" && (
-        <div>
+        <div className="cNj">
           <button className="button-create" onClick={createGameHandler}>
             {" "}
             create game
@@ -100,13 +104,13 @@ function Start({ socket }) {
       )}
       {mode === "create" && (
         <div className="create-code">
-          <h3>copy game code and send to friend</h3>
+          <h5>copy game code and send to a friend</h5>
           <h1> game code : {randomCode}</h1>
-          <h3>waiting for other player to join</h3>
+          <h5 className="waiting">waiting for other player to join...</h5>
         </div>
       )}
       {mode === "join" && (
-        <form onSubmit={handleCodeSubmit}>
+        <form className="join-form" onSubmit={handleCodeSubmit}>
           <div>
             <label className="label-join">Input game code</label>
           </div>
@@ -116,17 +120,16 @@ function Start({ socket }) {
             value={code}
             type="text"
             onChange={handleCodeChange}
-          ></input>
-          <div>
+            placeholder="code"
+          />
             <button className="button" type="submit">
-              &#9655;
+              start
             </button>
-          </div>
         </form>
       )}
 
       {mode === "checkingCode" && (
-        <h1 className="create-code">checking code</h1>
+        <h1 className="create-code">checking code...</h1>
       )}
       {mode === "codeAccepted" && <Navigate to="/game" />}
     </div>

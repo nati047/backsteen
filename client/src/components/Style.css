@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 body {
   /* margin-top: px; */
-  background-image: url(../background.jpg);
+  background-image: url(../gameBackground.jpg);
+  /* background-color: #d86f4b; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,34 +11,121 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  font-family: "Bungee", cursive;
-  color: aliceblue;
+  font-family: 'press start 2p', cursive;
+  color: #dfdf97;
+  text-shadow: rgb(200, 26, 26)  1px 1px;
+  /* position: relative; */
+}
+div.start-page{
+  /* border: 1px solid white; */
+  position: relative;
+  top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-size: 15px;
+}
+.name-form {
+  /* border: 1px solid white; */
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 40px;
+}
+input {
+  width: 70%;
+  height: 15%;
+  background-color: #c28f5c;
+  border-radius: 20px;
+  border: none;
+  font-family: inherit;
+  text-align: center;
 }
 
-.header {
+/* .header {
   font-size: 24px;
   font-family: "Open Sans", sans-serif;
+} */
+.game-img{
+  position: absolute;
+  top: 0;
+  left: 370px;
+  z-index: -100;
+  /* opacity: 80%; */
+  /* margin-left: 400px; */
+  width: auto;
+  height: 100%;
 }
 
-.image {
-  margin-top: 20px;
-  width: 80px;
-  height: 80px;
-}
 .title {
-  margin-top: 80px;
+  /* margin-top: 80px; */
   font-size: 60px;
+  position: relative;
+  top: 220px;
   background: linear-gradient(to right, #ee0909, #1c14bd, #ebeb95);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
+  text-shadow: none;
 }
 
 .labelin {
-  margin-left: 330px;
-  font-size: 50px;
+  display: block;
 }
-.label-input {
+button {
+  /* margin-top: 10px; */
+  /* margin-left: 650px; */
+  font-size: 30px;
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  text-shadow: red  2px 2px;
+}
+
+a:hover, button:hover {
+  color: red;
+}
+
+.cNj {
+  position: relative;
+  top: 250px;
+  text-align: center;
+}
+
+.create-code {
+  position: relative;
+  top: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.waiting {
+  margin-top: 20px;
+}
+
+.join-form {
+  /* border: 1px solid white; */
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 40px;
+  position: relative;
+  top: 250px;
+}
+
+/* .label-input {
   margin-top: 30px;
   margin-left: 400px;
   font-size: 60px;
@@ -44,16 +133,7 @@ body {
 .label-join {
   font-size: 50px;
   margin-left: 480px;
-}
-.button {
-  margin-top: 10px;
-  margin-left: 650px;
-  font-size: 120px;
-  background-color: transparent;
-  border: none;
-  color: aliceblue;
-  font-family: "Bungee", cursive;
-}
+} */
 
 .play {
   border-top: 10px solid white;
@@ -71,28 +151,7 @@ body {
   font-size: 30px;
   color: red;
 }
-.button-create {
-  font-size: 50px;
-  margin-left: 550px;
-  font-family: "Bungee", cursive;
-  background-color: transparent;
-  border: none;
-  color: aliceblue;
-}
 
-.button-join {
-  font-size: 50px;
-  margin-left: 570px;
-  font-family: "Bungee", cursive;
-  background-color: transparent;
-  border: none;
-  color: aliceblue;
-}
-
-.or {
-  font-size: 50px;
-  margin-left: 700px;
-}
 .controls {
   margin-top: -80px;
   margin-left: 1200px;
@@ -103,18 +162,6 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-.leaders {
-  margin-top: -80px;
-  margin-left: 550px;
-  font-size: 40px;
-  text-decoration: none;
-  background: linear-gradient(to right, #ee0979, #d7e38a, #0c0a8a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.leaders-link{
-  text-decoration: none;
-}
 .leaders-link:hover{
   text-shadow: 2px 0px;
 }
@@ -125,14 +172,17 @@ body {
   text-decoration: none;
 }
 .control-back {
-  font-size: 120px;
+  font-size: 40px;
   margin-top: 50px;
   text-align: center;
   text-decoration: none;
   color: aliceblue;
 }
+.control-back:hover {
+  color: red;
+}
 .control-h1 {
-  font-size: 50px;
+  font-size: 40px;
   margin-top: 80px;
   text-align: center;
   background: linear-gradient(to right, #ee0979, #d7e38a, #0c0a8a);
@@ -140,17 +190,14 @@ body {
   -webkit-text-fill-color: transparent;
 }
 .control-p {
+  color: 
+  #ffa500;
   margin-top: 40px;
   text-align: center;
-  font-size: 40px;
-  margin: 10px 5px;
-}
-.create-code {
-  font-size: 30px;
-  margin-left: 440px;
+  font-size: 20px;
+  line-height: 40px;
+  padding: 20px;
+  margin: 20px 10px;
 }
 
-.control-back {
-  height: 10px;
-  margin-right: 500px;
-}
+
