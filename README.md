@@ -1,6 +1,7 @@
 # BACKSTEEN
 A multiplayer brick breaker game to enjoy with a friend. Players can create a game session and send a code to a friend so that they can join and play against eachother from anywhere, without the hastle of creating an account or loging in. They can see each other's screen in a split screen format and compare their scores.
-
+## play game @ 
+  http://backsteen.herokuapp.com/
 # SETUP
 
 1. Run `npm install` to install all dependencies.
@@ -22,9 +23,7 @@ A multiplayer brick breaker game to enjoy with a friend. Players can create a ga
     MongoDb
 # SCREENSHOTS 
 
-![""](https://github.com/nati047/backsteen/blob/master/screenshots/startPage.png?raw=true)
-![""](https://github.com/nati047/backsteen/blob/master/screenshots/createVSjoin.png?raw=true)
-![""](https://github.com/nati047/backsteen/blob/master/screenshots/code.png?raw=true)
+
 ![""](https://github.com/nati047/backsteen/blob/master/screenshots/game.png?raw=true)
 ![""](https://github.com/nati047/backsteen/blob/master/screenshots/win.png?raw=true)
 ![""](https://github.com/nati047/backsteen/blob/master/screenshots/leaders.png?raw=true)
